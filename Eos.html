@@ -83,14 +83,16 @@
 <meta name="keywords" content="区块链,EOS,比特币">
 <meta property="og:type" content="article">
 <meta property="og:title" content="区块链EOS出现史诗级漏洞,可完全控制货币交易">
-<meta property="og:url" content="http://www.l0s7r.com/Eos.html">
+<meta property="og:url" content="http://www.l0s7r.com/EOS.html">
 <meta property="og:site_name" content="l0s7r">
 <meta property="og:description" content="5 月 29 日，据 360 安全卫士官方发布，360 Vulcan（伏尔甘）团队发现了区块链平台 EOS 的一系列高危安全漏洞。经验证，其中部分漏洞可以在 EOS 节点上远程执行任意代码，即可以通过远程攻击，直接控制和接管 EOS 上运行的所有节点。由于已经完全控制了节点的系统，攻击者可以“为所欲为”，如窃取 EOS 超级节点的密钥，控制 EOS 网络的虚拟货币交易。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-30T10:52:35.136Z">
+<meta property="og:image" content="http://www.l0s7r.com/EOS/WB.jpg">
+<meta property="og:updated_time" content="2018-05-30T11:09:21.421Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="区块链EOS出现史诗级漏洞,可完全控制货币交易">
 <meta name="twitter:description" content="5 月 29 日，据 360 安全卫士官方发布，360 Vulcan（伏尔甘）团队发现了区块链平台 EOS 的一系列高危安全漏洞。经验证，其中部分漏洞可以在 EOS 节点上远程执行任意代码，即可以通过远程攻击，直接控制和接管 EOS 上运行的所有节点。由于已经完全控制了节点的系统，攻击者可以“为所欲为”，如窃取 EOS 超级节点的密钥，控制 EOS 网络的虚拟货币交易。">
+<meta name="twitter:image" content="http://www.l0s7r.com/EOS/WB.jpg">
 
 
 
@@ -120,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://www.l0s7r.com/Eos.html"/>
+  <link rel="canonical" href="http://www.l0s7r.com/EOS.html"/>
 
 
 
@@ -253,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.l0s7r.com/Eos.html">
+    <link itemprop="mainEntityOfPage" href="http://www.l0s7r.com/EOS.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="l0s7r">
@@ -321,7 +323,19 @@
 
       
         <p>5 月 29 日，据 360 安全卫士官方发布，360 Vulcan（伏尔甘）团队发现了区块链平台 EOS 的一系列高危安全漏洞。经验证，其中部分漏洞可以在 EOS 节点上远程执行任意代码，即可以通过远程攻击，直接控制和接管 EOS 上运行的所有节点。由于已经完全控制了节点的系统，攻击者可以“为所欲为”，如窃取 EOS 超级节点的密钥，控制 EOS 网络的虚拟货币交易。<br><a id="more"></a></p>
-<h2 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h2><p>在解析WASM文件时,我们发现、并成功利用了EOS缓冲区越界写入漏洞。通过这个漏洞，攻击者可以把一个恶意智能合约上传到节点服务器，之后节点服务器就会解析这个恶意合约，然后恶意合约就会在服务器上被执行，之后控制该节点服务器，通过这个漏洞，攻击者可以把一个恶意智能合约上传到节点服务器，之后节点服务器就会解析这个恶意合约，然后恶意合约就会在服务器上被执行，之后控制该节点服务器。 </p><br><h3>漏洞报告时间表</h3><br><p>2018-5-11 发现EOS越界写入漏洞</p><br><p>2018-5-28 EOS超级节点完全利用演示完成</p><br><p>2018-5-28 漏洞详细信息报告给供应商</p><br><p>2018-5-29 供应商修复了GitHub上的漏洞，并解决了问题</p><br><p>2018-5-29 注意到供应商修复尚未完成 </p><br><h3>技术细节漏洞</h3><br><p>这是一个缓冲区越界写入漏洞。在“ libraries/chain/webassembly/binaryen.cpp（代码第78行）,Function binaryen_runtime::instantiate_module:” </p><br><pre><br>    <code><br>        for (auto&amp; segment : module-&gt;table.segments) {<br>Address offset = ConstantExpressionRunner<trivialglobalmanager>(globals).visit(segment.offset).value.geti32();<br>assert(offset + segment.data.size() &lt;= module-&gt;table.initial);<br>for (size_t i = 0; i != segment.data.size(); ++i) {<br>table[offset + i] = segment.data[i]; &lt;= OOB write here !<br>}<br>}<br>    </trivialglobalmanager></code><br></pre><br><p>这里的表示一个std::矢量包含了功能表的“Names”。当存储元素导入到表内，|offset|函数域将无法正确实施检查工作。请注意，在设置该值之前，有一个asset函数，它会检查|offset|函数，但不幸的是，assert函数只适用于Debug版本，而不适用于正式的发布版.</p><br><p>360方面表示，29日凌晨，360第一时间将该类漏洞上报EOS官方，并协助其修复安全隐患。EOS网络负责人表示，在修复这些问题之前，不会将EOS网络正式上线。随后，<a href="https://weibo.com/imeos?refer_flag=1001030101_&amp;is_hot=1" target="_blank" rel="noopener">IMEOS官方微博</a>回应称，EOS官方已在进行修复漏洞。</p>
+<h2 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h2><p></p><p>在解析WASM文件时,我们发现、并成功利用了EOS缓冲区越界写入漏洞。通过这个漏洞，攻击者可以把一个恶意智能合约上传到节点服务器，之后节点服务器就会解析这个恶意合约，然后恶意合约就会在服务器上被执行，之后控制该节点服务器，通过这个漏洞，攻击者可以把一个恶意智能合约上传到节点服务器，之后节点服务器就会解析这个恶意合约，然后恶意合约就会在服务器上被执行，之后控制该节点服务器。 </p><p></p>
+<p></p><h3>漏洞报告时间表</h3><p></p>
+<p></p><p>2018-5-11 发现EOS越界写入漏洞</p><p></p>
+<p></p><p>2018-5-28 EOS超级节点完全利用演示完成</p><p></p>
+<p></p><p>2018-5-28 漏洞详细信息报告给供应商</p><p></p>
+<p></p><p>2018-5-29 供应商修复了GitHub上的漏洞，并解决了问题</p><p></p>
+<p></p><p>2018-5-29 注意到供应商修复尚未完成 </p><p></p>
+<p></p><h3>技术细节漏洞</h3><p></p>
+<p></p><p>这是一个缓冲区越界写入漏洞。在“ libraries/chain/webassembly/binaryen.cpp（代码第78行）,Function binaryen_runtime::instantiate_module:” </p><p></p>
+<p><pre><br>    <code><br>        for (auto&amp; segment : module-&gt;table.segments) {<br>Address offset = ConstantExpressionRunner<trivialglobalmanager>(globals).visit(segment.offset).value.geti32();<br>assert(offset + segment.data.size() &lt;= module-&gt;table.initial);<br>for (size_t i = 0; i != segment.data.size(); ++i) {<br>table[offset + i] = segment.data[i]; &lt;= OOB write here !<br>}<br>}<br>    </trivialglobalmanager></code><br></pre></p>
+<p></p><p>这里的表示一个std::矢量包含了功能表的“Names”。当存储元素导入到表内，|offset|函数域将无法正确实施检查工作。请注意，在设置该值之前，有一个asset函数，它会检查|offset|函数，但不幸的是，assert函数只适用于Debug版本，而不适用于正式的发布版.</p><p></p>
+<p></p><p>360方面表示，29日凌晨，360第一时间将该类漏洞上报EOS官方，并协助其修复安全隐患。EOS网络负责人表示，在修复这些问题之前，不会将EOS网络正式上线。随后，<a href="https://weibo.com/imeos?refer_flag=1001030101_&amp;is_hot=1" target="_blank" rel="noopener">IMEOS官方微博</a>回应称，EOS官方已在进行修复漏洞。</p><br><img src="EOS/WB.jpg" alt=""><p></p>
+
       
     </div>
     
